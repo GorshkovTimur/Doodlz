@@ -1,4 +1,7 @@
 package com.timmyg.doodlz;
 
-public class EraseImageDialogFragment {
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+
+public class EraseImageDialogFragment extends DialogFragment {
 }

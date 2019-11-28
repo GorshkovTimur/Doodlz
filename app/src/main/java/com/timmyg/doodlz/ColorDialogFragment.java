@@ -1,4 +1,6 @@
 package com.timmyg.doodlz;
 
-public class ColorDialogFragment {
+import androidx.fragment.app.DialogFragment;
+
+public class ColorDialogFragment extends DialogFragment {
 }

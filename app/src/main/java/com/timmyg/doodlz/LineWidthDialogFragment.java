@@ -1,4 +1,6 @@
 package com.timmyg.doodlz;
 
-public class LineWidthDialogFragment {
+import androidx.fragment.app.DialogFragment;
+
+public class LineWidthDialogFragment extends DialogFragment {
 }

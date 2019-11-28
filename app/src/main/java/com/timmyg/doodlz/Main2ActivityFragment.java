@@ -1,14 +1,22 @@
 package com.timmyg.doodlz;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -100,4 +108,88 @@ public class Main2ActivityFragment extends Fragment {
 
         }
     };
+
+    private void confirmErase() {
+        EraseImageDialogFragment fragment = new EraseImageDialogFragment();
+        fragment.show(getFragmentManager(), "erase dialog");
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.doodle_fragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.color:
+                ColorDialogFragment colorDialog = new ColorDialogFragment();
+                colorDialog.show(getFragmentManager(), "color dialog");
+                return true;
+
+            case R.id.line_width:
+                EraseImageDialogFragment eraseDialog = new EraseImageDialogFragment();
+                eraseDialog.show(getFragmentManager(), "line width dialog");
+                return true;
+
+            case R.id.delete_drawing:
+                confirmErase();
+                return true;
+
+            case R.id.save:
+                saveImage();
+                return true;
+
+            case R.id.print:
+                doodleView.printImage();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void saveImage() {
+        if (getContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                builder.setMessage(R.string.permission_explanation);
+
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        requestPermissions(new String[] {
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                SAVE_IMAGE_PERMISSION_REQUEST_CODE);
+                        }
+                    }
+                );
+                builder.create().show();
+            } else {
+                requestPermissions(new String[] {
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        SAVE_IMAGE_PERMISSION_REQUEST_CODE);
+            }
+        } else {
+            doodleView.saveImage();
+        }
+    }
+
+    public DoodleView getDoodleView() {
+        return doodleView;
+    }
+
+    public void setDoodleView(boolean visible) {
+        dialogOnScreen = visible;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case SAVE_IMAGE_PERMISSION_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    doodleView.saveImage();
+        }
+    }
 }
