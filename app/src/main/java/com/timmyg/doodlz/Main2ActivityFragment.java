@@ -1,6 +1,7 @@
 package com.timmyg.doodlz;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
@@ -25,7 +26,7 @@ import com.timmyg.doodlz.View.DoodleView;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class Main2ActivityFragment extends Fragment {
+public class Main2ActivityFragment extends DialogFragment {
 
     private DoodleView doodleView;
     private float acceleration;
