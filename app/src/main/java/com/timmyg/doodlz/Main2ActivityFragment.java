@@ -130,8 +130,8 @@ public class Main2ActivityFragment extends DialogFragment {
                 return true;
 
             case R.id.line_width:
-                EraseImageDialogFragment eraseDialog = new EraseImageDialogFragment();
-                eraseDialog.show(getFragmentManager(), "line width dialog");
+                LineWidthDialogFragment lineWidthDialogFragment = new LineWidthDialogFragment();
+                lineWidthDialogFragment.show(getFragmentManager(), "line width dialog");
                 return true;
 
             case R.id.delete_drawing:
